@@ -50,7 +50,7 @@ export default class DockMonitor extends Component {
     }
     e.preventDefault();
 
-    const key = event.keyCode || event.which;
+    const key = e.keyCode || e.which;
     const char = String.fromCharCode(key);
     switch (char.toUpperCase()) {
     case this.props.toggleVisibilityKey.toUpperCase():
