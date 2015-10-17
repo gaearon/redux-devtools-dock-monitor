@@ -1,6 +1,6 @@
 {
   "name": "redux-devtools-dock-monitor",
-  "version": "1.0.0-beta-2",
+  "version": "1.0.0-beta-3",
   "description": "A resizable and movable dock for Redux DevTools monitors",
   "main": "lib/index.js",
   "scripts": {
@@ -45,7 +45,7 @@
   },
   "peerDependencies": {
     "react": "^0.14.0",
-    "redux-devtools": "^3.0.0-beta-2"
+    "redux-devtools": "^3.0.0-beta-3"
   },
   "dependencies": {
     "babel-runtime": "^5.8.25",
