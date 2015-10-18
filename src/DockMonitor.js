@@ -48,15 +48,16 @@ export default class DockMonitor extends Component {
     if (!e.ctrlKey) {
       return;
     }
-    e.preventDefault();
 
     const key = e.keyCode || e.which;
     const char = String.fromCharCode(key);
     switch (char.toUpperCase()) {
     case this.props.toggleVisibilityKey.toUpperCase():
+      e.preventDefault();
       this.props.dispatch(toggleVisibility());
       break;
     case this.props.changePositionKey.toUpperCase():
+      e.preventDefault();
       this.props.dispatch(changePosition());
       break;
     default:
