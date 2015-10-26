@@ -13,6 +13,7 @@ export default class DockMonitor extends Component {
     defaultSize: PropTypes.number.isRequired,
     toggleVisibilityKey: PropTypes.string.isRequired,
     changePositionKey: PropTypes.string.isRequired,
+    fluid: PropTypes.bool,
     children: PropTypes.element,
 
     dispatch: PropTypes.func,
@@ -27,7 +28,8 @@ export default class DockMonitor extends Component {
   static defaultProps = {
     defaultIsVisible: true,
     defaultPosition: 'right',
-    defaultSize: 0.3
+    defaultSize: 0.3,
+    fluid: true
   };
 
   constructor(props) {
@@ -70,7 +72,7 @@ export default class DockMonitor extends Component {
   }
 
   render() {
-    const { monitorState, children, ...rest } = this.props;
+    const { monitorState, children, fluid, ...rest } = this.props;
     const { position, isVisible, size } = monitorState;
     const childProps = {
       ...rest,
@@ -81,6 +83,7 @@ export default class DockMonitor extends Component {
       <Dock position={position}
             isVisible={isVisible}
             size={size}
+            fluid={fluid}
             onSizeChange={this.handleSizeChange}
             dimMode='none'>
         {cloneElement(children, childProps)}
