@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "babel-runtime": "^5.8.25",
+    "parse-key": "^0.2.1",
     "react-dock": "^0.2.1",
     "react-pure-render": "^1.0.2"
   }

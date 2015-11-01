@@ -3,6 +3,7 @@ import Dock from 'react-dock';
 import { POSITIONS } from './constants';
 import { toggleVisibility, changePosition, changeSize } from './actions';
 import reducer from './reducers';
+import parseKey from 'parse-key';
 
 export default class DockMonitor extends Component {
   static reducer = reducer;
@@ -46,24 +47,26 @@ export default class DockMonitor extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown(e) {
-    if (!e.ctrlKey) {
-      return;
-    }
+  matchesKey(key, event) {
+    const charCode = event.keyCode || event.which;
+    const char = String.fromCharCode(charCode);
+    return key.name.toUpperCase() === char.toUpperCase() &&
+      key.alt === event.altKey &&
+      key.ctrl === event.ctrlKey &&
+      key.meta === event.metaKey &&
+      key.shift === event.shiftKey;
+  }
 
-    const key = e.keyCode || e.which;
-    const char = String.fromCharCode(key);
-    switch (char.toUpperCase()) {
-    case this.props.toggleVisibilityKey.toUpperCase():
+  handleKeyDown(e) {
+    const visibilityKey = parseKey(this.props.toggleVisibilityKey);
+    const positionKey = parseKey(this.props.changePositionKey);
+
+    if (this.matchesKey(visibilityKey, e)) {
       e.preventDefault();
       this.props.dispatch(toggleVisibility());
-      break;
-    case this.props.changePositionKey.toUpperCase():
+    } else if (this.matchesKey(positionKey, e)) {
       e.preventDefault();
       this.props.dispatch(changePosition());
-      break;
-    default:
-      break;
     }
   }
 
