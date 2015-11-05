@@ -5,7 +5,7 @@ import { toggleVisibility, changePosition, changeSize } from './actions';
 import reducer from './reducers';
 import parseKey from 'parse-key';
 
-export default class DockMonitor extends Component {
+class DockMonitor extends Component {
   static reducer = reducer;
 
   static propTypes = {
@@ -94,3 +94,5 @@ export default class DockMonitor extends Component {
     );
   }
 }
+
+export default DockMonitor;
