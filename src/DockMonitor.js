@@ -6,7 +6,7 @@ import reducer from './reducers';
 import parseKey from 'parse-key';
 
 export default class DockMonitor extends Component {
-  static reducer = reducer;
+  static update = reducer;
 
   static propTypes = {
     defaultPosition: PropTypes.oneOf(POSITIONS).isRequired,
