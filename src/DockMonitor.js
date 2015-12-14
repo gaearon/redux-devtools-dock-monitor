@@ -3,6 +3,7 @@ import Dock from 'react-dock';
 import { POSITIONS } from './constants';
 import { toggleVisibility, changePosition, changeSize } from './actions';
 import reducer from './reducers';
+import parseKey from 'parse-key';
 
 export default class DockMonitor extends Component {
   static reducer = reducer;
@@ -13,6 +14,7 @@ export default class DockMonitor extends Component {
     defaultSize: PropTypes.number.isRequired,
     toggleVisibilityKey: PropTypes.string.isRequired,
     changePositionKey: PropTypes.string.isRequired,
+    fluid: PropTypes.bool,
     children: PropTypes.element,
 
     dispatch: PropTypes.func,
@@ -27,7 +29,8 @@ export default class DockMonitor extends Component {
   static defaultProps = {
     defaultIsVisible: true,
     defaultPosition: 'right',
-    defaultSize: 0.3
+    defaultSize: 0.3,
+    fluid: true
   };
 
   constructor(props) {
@@ -44,23 +47,26 @@ export default class DockMonitor extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown(e) {
-    if (!e.ctrlKey) {
-      return;
-    }
-    e.preventDefault();
+  matchesKey(key, event) {
+    const charCode = event.keyCode || event.which;
+    const char = String.fromCharCode(charCode);
+    return key.name.toUpperCase() === char.toUpperCase() &&
+      key.alt === event.altKey &&
+      key.ctrl === event.ctrlKey &&
+      key.meta === event.metaKey &&
+      key.shift === event.shiftKey;
+  }
 
-    const key = event.keyCode || event.which;
-    const char = String.fromCharCode(key);
-    switch (char.toUpperCase()) {
-    case this.props.toggleVisibilityKey.toUpperCase():
+  handleKeyDown(e) {
+    const visibilityKey = parseKey(this.props.toggleVisibilityKey);
+    const positionKey = parseKey(this.props.changePositionKey);
+
+    if (this.matchesKey(visibilityKey, e)) {
+      e.preventDefault();
       this.props.dispatch(toggleVisibility());
-      break;
-    case this.props.changePositionKey.toUpperCase():
+    } else if (this.matchesKey(positionKey, e)) {
+      e.preventDefault();
       this.props.dispatch(changePosition());
-      break;
-    default:
-      break;
     }
   }
 
@@ -69,7 +75,7 @@ export default class DockMonitor extends Component {
   }
 
   render() {
-    const { monitorState, children, ...rest } = this.props;
+    const { monitorState, children, fluid, ...rest } = this.props;
     const { position, isVisible, size } = monitorState;
     const childProps = {
       ...rest,
@@ -80,6 +86,7 @@ export default class DockMonitor extends Component {
       <Dock position={position}
             isVisible={isVisible}
             size={size}
+            fluid={fluid}
             onSizeChange={this.handleSizeChange}
             dimMode='none'>
         {cloneElement(children, childProps)}
