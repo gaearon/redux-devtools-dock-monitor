@@ -57,15 +57,15 @@ export default class DockMonitor extends Component {
       key.shift === event.shiftKey;
   }
 
-  handleKeyDown(e) {
+  handleKeyDown(event) {
     const visibilityKey = parseKey(this.props.toggleVisibilityKey);
     const positionKey = parseKey(this.props.changePositionKey);
 
-    if (this.matchesKey(visibilityKey, e)) {
-      e.preventDefault();
+    if (this.matchesKey(visibilityKey, event)) {
+      event.preventDefault();
       this.props.dispatch(toggleVisibility());
-    } else if (this.matchesKey(positionKey, e)) {
-      e.preventDefault();
+    } else if (this.matchesKey(positionKey, event)) {
+      event.preventDefault();
       this.props.dispatch(changePosition());
     }
   }
