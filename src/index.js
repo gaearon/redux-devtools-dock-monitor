@@ -1,1 +1,1 @@
-export default from './DockMonitor';
+module.exports = require('./DockMonitor');

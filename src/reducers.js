@@ -1,5 +1,5 @@
-import { CHANGE_POSITION, CHANGE_SIZE, TOGGLE_VISIBILITY } from './actions';
-import { POSITIONS } from './constants';
+const { CHANGE_POSITION, CHANGE_SIZE, TOGGLE_VISIBILITY } = require('./actions');
+const { POSITIONS } = require('./constants');
 
 function position(props, state = props.defaultPosition, action) {
   return (action.type === CHANGE_POSITION) ?
@@ -24,11 +24,11 @@ function childMonitorState(props, state, action) {
   return child.type.update(child.props, state, action);
 }
 
-export default function reducer(props, state = {}, action) {
+module.exports = function reducer(props, state = {}, action) {
   return {
     position: position(props, state.position, action),
     isVisible: isVisible(props, state.isVisible, action),
     size: size(props, state.size, action),
     childMonitorState: childMonitorState(props, state.childMonitorState, action)
   };
-}
+};
