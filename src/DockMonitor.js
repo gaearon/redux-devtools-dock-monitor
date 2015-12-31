@@ -1,11 +1,12 @@
-import React, { cloneElement, Component, PropTypes } from 'react';
-import Dock from 'react-dock';
-import { POSITIONS } from './constants';
-import { toggleVisibility, changePosition, changeSize } from './actions';
-import reducer from './reducers';
-import parseKey from 'parse-key';
+const React = require('react');
+const { cloneElement, Component, PropTypes } = React;
+const Dock = require('react-dock');
+const { POSITIONS } = require('./constants');
+const { toggleVisibility, changePosition, changeSize } = require('./actions');
+const reducer = require('./reducers');
+const parseKey = require('parse-key');
 
-export default class DockMonitor extends Component {
+class DockMonitor extends Component {
   static update = reducer;
 
   static propTypes = {
@@ -94,3 +95,5 @@ export default class DockMonitor extends Component {
     );
   }
 }
+
+module.exports = DockMonitor;

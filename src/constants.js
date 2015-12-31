@@ -1,1 +1,1 @@
-export const POSITIONS = ['left', 'top', 'right', 'bottom'];
+module.exports.POSITIONS = ['left', 'top', 'right', 'bottom'];
