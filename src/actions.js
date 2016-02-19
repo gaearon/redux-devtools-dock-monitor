@@ -12,3 +12,8 @@ export const CHANGE_SIZE = '@@redux-devtools-log-monitor/CHANGE_SIZE';
 export function changeSize(size) {
   return { type: CHANGE_SIZE, size: size };
 }
+
+export const CHANGE_MONITOR = '@@redux-devtools-log-monitor/CHANGE_MONITOR';
+export function changeMonitor() {
+  return { type: CHANGE_MONITOR };
+}

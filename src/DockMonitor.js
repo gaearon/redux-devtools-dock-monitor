@@ -1,7 +1,7 @@
-import React, { cloneElement, Component, PropTypes } from 'react';
+import React, { cloneElement, Children, Component, PropTypes } from 'react';
 import Dock from 'react-dock';
 import { POSITIONS } from './constants';
-import { toggleVisibility, changePosition, changeSize } from './actions';
+import { toggleVisibility, changeMonitor, changePosition, changeSize } from './actions';
 import reducer from './reducers';
 import parseKey from 'parse-key';
 
@@ -14,8 +14,8 @@ export default class DockMonitor extends Component {
     defaultSize: PropTypes.number.isRequired,
     toggleVisibilityKey: PropTypes.string.isRequired,
     changePositionKey: PropTypes.string.isRequired,
+    changeMonitorKey: PropTypes.string,
     fluid: PropTypes.bool,
-    children: PropTypes.element,
 
     dispatch: PropTypes.func,
     monitorState: PropTypes.shape({
@@ -37,6 +37,22 @@ export default class DockMonitor extends Component {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleSizeChange = this.handleSizeChange.bind(this);
+
+    const childrenCount = Children.count(props.children);
+    if (childrenCount === 0) {
+      console.error(
+        '<DockMonitor> requires at least one monitor inside. ' +
+        'Why don’t you try <LogMonitor>? You can get it at ' +
+        'https://github.com/gaearon/redux-devtools-log-monitor.'
+      );
+    } else if (childrenCount > 1 && !props.changeMonitorKey) {
+      console.error(
+        'You specified multiple monitors inside <DockMonitor> ' +
+        'but did not provide `changeMonitorKey` prop to change them. ' +
+        'Try specifying <DockMonitor changeMonitorKey="ctrl-m" /> ' +
+        'and then press Ctrl-M.'
+      );
+    }
   }
 
   componentDidMount() {
@@ -48,6 +64,10 @@ export default class DockMonitor extends Component {
   }
 
   matchesKey(key, event) {
+    if (!key) {
+      return false;
+    }
+
     const charCode = event.keyCode || event.which;
     const char = String.fromCharCode(charCode);
     return key.name.toUpperCase() === char.toUpperCase() &&
@@ -58,13 +78,21 @@ export default class DockMonitor extends Component {
   }
 
   handleKeyDown(e) {
+    if (
+      e.target.tagName === 'INPUT' ||
+      e.target.tagName === 'SELECT' ||
+      e.target.tagName === 'TEXTAREA' ||
+      e.target.isContentEditable
+    ) {
+      return;
+    }
+
     const visibilityKey = parseKey(this.props.toggleVisibilityKey);
     const positionKey = parseKey(this.props.changePositionKey);
 
-    // do not trigger action if an input-like element is focused
-    if (e.target.tagName == 'INPUT' || e.target.tagName == 'SELECT' ||
-        e.target.tagName == 'TEXTAREA' || e.target.isContentEditable) {
-      return
+    let monitorKey;
+    if (this.props.changeMonitorKey) {
+      monitorKey = parseKey(this.props.changeMonitorKey);
     }
 
     if (this.matchesKey(visibilityKey, e)) {
@@ -73,6 +101,9 @@ export default class DockMonitor extends Component {
     } else if (this.matchesKey(positionKey, e)) {
       e.preventDefault();
       this.props.dispatch(changePosition());
+    } else if (this.matchesKey(monitorKey, e)) {
+      e.preventDefault();
+      this.props.dispatch(changeMonitor());
     }
   }
 
@@ -80,13 +111,23 @@ export default class DockMonitor extends Component {
     this.props.dispatch(changeSize(requestedSize));
   }
 
+  renderChild(child, index, otherProps) {
+    const { monitorState } = this.props;
+    const { childMonitorIndex, childMonitorStates } = monitorState;
+
+    if (index !== childMonitorIndex) {
+      return null;
+    }
+
+    return cloneElement(child, {
+      monitorState: childMonitorStates[index],
+      ...otherProps
+    });
+  }
+
   render() {
     const { monitorState, children, fluid, ...rest } = this.props;
     const { position, isVisible, size } = monitorState;
-    const childProps = {
-      ...rest,
-      monitorState: monitorState.childMonitorState
-    };
 
     return (
       <Dock position={position}
@@ -95,7 +136,9 @@ export default class DockMonitor extends Component {
             fluid={fluid}
             onSizeChange={this.handleSizeChange}
             dimMode='none'>
-        {cloneElement(children, childProps)}
+        {Children.map(children, (child, index) =>
+          this.renderChild(child, index, rest)
+        )}
       </Dock>
     );
   }
