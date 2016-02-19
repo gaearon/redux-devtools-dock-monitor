@@ -4,7 +4,7 @@ Redux DevTools Dock Monitor
 A resizable and movable dock for [Redux DevTools](https://github.com/gaearon/redux-devtools).  
 Powered by [React Dock](https://github.com/alexkuz/react-dock).
 
-![](http://i.imgur.com/e2vaIAc.gif)
+![](http://i.imgur.com/QbNzNW4.gif)
 
 ### Installation
 
@@ -23,12 +23,15 @@ For example, you can use it together with [`LogMonitor`](https://github.com/gaea
 import React from 'react';
 import { createDevTools } from 'redux-devtools';
 import LogMonitor from 'redux-devtools-log-monitor';
+import SliderMonitor from 'redux-slider-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 
 export default createDevTools(
   <DockMonitor toggleVisibilityKey='ctrl-h'
-               changePositionKey='ctrl-q'>
+               changePositionKey='ctrl-q'
+               changeMonitorKey='ctrl-m'>
     <LogMonitor />
+    <SliderMonitor />
   </DockMonitor>
 );
 ```
