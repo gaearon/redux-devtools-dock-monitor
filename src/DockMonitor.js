@@ -61,6 +61,12 @@ export default class DockMonitor extends Component {
     const visibilityKey = parseKey(this.props.toggleVisibilityKey);
     const positionKey = parseKey(this.props.changePositionKey);
 
+    // do not trigger action if an input-like element is focused
+    if (e.target.tagName == 'INPUT' || e.target.tagName == 'SELECT' ||
+        e.target.tagName == 'TEXTAREA' || e.target.isContentEditable) {
+      return
+    }
+
     if (this.matchesKey(visibilityKey, e)) {
       e.preventDefault();
       this.props.dispatch(toggleVisibility());
