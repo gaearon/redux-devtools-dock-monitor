@@ -3,6 +3,10 @@
   "version": "1.1.0",
   "description": "A resizable and movable dock for Redux DevTools monitors",
   "main": "lib/index.js",
+  "files": [
+    "lib",
+    "src"
+  ],
   "scripts": {
     "clean": "rimraf lib",
     "build": "babel src --out-dir lib",
