@@ -78,12 +78,16 @@ export default class DockMonitor extends Component {
   }
 
   handleKeyDown(e) {
-    if (
+    // Ignore regular keys when focused on a field
+    // and no modifiers are active.
+    if ((
+      !e.ctrlKey && !e.metaKey && !e.altKey
+    ) && (
       e.target.tagName === 'INPUT' ||
       e.target.tagName === 'SELECT' ||
       e.target.tagName === 'TEXTAREA' ||
       e.target.isContentEditable
-    ) {
+    )) {
       return;
     }
 
