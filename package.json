@@ -58,6 +58,7 @@
   "dependencies": {
     "babel-runtime": "^6.2.0",
     "parse-key": "^0.2.1",
+    "prop-types": "^15.5.8",
     "react-dock": "^0.2.1",
     "react-pure-render": "^1.0.2"
   }
