@@ -1,4 +1,5 @@
-import React, { cloneElement, Children, Component, PropTypes } from 'react';
+import React, { cloneElement, Children, Component } from 'react';
+import PropTypes from 'prop-types';
 import Dock from 'react-dock';
 import { POSITIONS } from './constants';
 import { toggleVisibility, changeMonitor, changePosition, changeSize } from './actions';
