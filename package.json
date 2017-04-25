@@ -52,14 +52,14 @@
     "webpack": "^1.11.0"
   },
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0-0",
-    "redux-devtools": "^3.0.0"
+    "react": "^0.14.9 || ^15.3.0",
+    "redux-devtools": "^3.4.0"
   },
   "dependencies": {
     "babel-runtime": "^6.2.0",
     "parse-key": "^0.2.1",
     "prop-types": "^15.5.8",
-    "react-dock": "^0.2.1",
+    "react-dock": "^0.2.4",
     "react-pure-render": "^1.0.2"
   }
 }
