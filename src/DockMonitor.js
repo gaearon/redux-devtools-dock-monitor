@@ -9,7 +9,7 @@ export default class DockMonitor extends Component {
   static update = reducer;
 
   static propTypes = {
-    defaultPosition: PropTypes.oneOf(POSITIONS).isRequired,
+    defaultPosition: PropTypes.oneOf(POSITIONS),
     defaultIsVisible: PropTypes.bool.isRequired,
     defaultSize: PropTypes.number.isRequired,
     toggleVisibilityKey: PropTypes.string.isRequired,
