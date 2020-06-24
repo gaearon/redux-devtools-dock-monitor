@@ -30,6 +30,8 @@ export default class DockMonitor extends Component {
   static defaultProps = {
     defaultIsVisible: true,
     defaultPosition: 'right',
+    changePositionKey: 'ctrl-w',
+    toggleVisibilityKey: 'ctrl-h',
     defaultSize: 0.3,
     fluid: true
   };
